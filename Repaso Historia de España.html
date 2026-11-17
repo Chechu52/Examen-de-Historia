@@ -1,0 +1,752 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Repaso Historia de España</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: sticky top nav with 3 tabs (V/F, ocos, test); each view is a scrollable column of cards on a warm paper surface, topic-colored left rail per item */
+:root{
+  --bg:#F3EFE6; --surface:#FFFFFF; --surface-2:#FAF7F0;
+  --fg:#211C16; --muted:#6B6355; --border:#E2DACB;
+  --accent:#2C4A7C; --accent-ink:#1B3258;
+  --good:#0D6B5C; --good-bg:#DFF3EE;
+  --bad:#B3261E; --bad-bg:#FCE8E6;
+  --ring: 44,74,124;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15130F; --surface:#1E1B15; --surface-2:#211D17;
+    --fg:#EFE9DC; --muted:#A79C86; --border:#3A3326;
+    --accent:#7C9CD4; --accent-ink:#A9C1E6;
+    --good:#4FBFA8; --good-bg:#17332C;
+    --bad:#E8847B; --bad-bg:#3A1C19;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15130F; --surface:#1E1B15; --surface-2:#211D17;
+  --fg:#EFE9DC; --muted:#A79C86; --border:#3A3326;
+  --accent:#7C9CD4; --accent-ink:#A9C1E6;
+  --good:#4FBFA8; --good-bg:#17332C;
+  --bad:#E8847B; --bad-bg:#3A1C19;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{height:auto}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+}
+h1,h2,h3,.disp{ font-family:'Lora',Georgia,serif; text-wrap:balance; }
+::selection{ background:rgba(var(--ring),.25) }
+
+.wrap{ max-width:880px; margin:0 auto; padding-block:28px 80px; }
+
+header.hero{ padding-block:4px 20px; }
+.eyebrow{ font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:0 0 8px; }
+h1{ font-size:clamp(28px,5vw,40px); line-height:1.08; margin:0 0 10px; font-weight:600; }
+.sub{ color:var(--muted); font-size:15.5px; line-height:1.55; margin:0; max-width:62ch; }
+
+nav.tabs{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+  display:flex; gap:6px; background:var(--bg);
+  padding-block:14px 12px; margin-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:21; background:var(--bg); }
+.tab{
+  flex:1; appearance:none; border:1px solid var(--border); background:var(--surface);
+  color:var(--fg); font:inherit; font-weight:600; font-size:13.5px;
+  padding:11px 8px; border-radius:10px; cursor:pointer; text-align:center;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.tab .n{ display:block; font-size:11px; font-weight:500; color:var(--muted); margin-top:2px; }
+.tab[aria-selected="true"]{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.tab[aria-selected="true"] .n{ color:rgba(255,255,255,.8); }
+.tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+.view{ display:none; }
+.view.active{ display:block; }
+
+.panel-head{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px; margin:22px 0 14px; }
+.panel-head h2{ font-size:21px; margin:0 0 4px; }
+.panel-head p{ margin:0; color:var(--muted); font-size:13.5px; max-width:52ch; }
+
+.score{
+  display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted);
+  background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:6px 14px 6px 6px;
+  white-space:nowrap;
+}
+.score b{ color:var(--fg); font-variant-numeric:tabular-nums; }
+.score .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); }
+
+.filters{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 16px; }
+.chip{
+  appearance:none; border:1px solid var(--border); background:var(--surface); color:var(--muted);
+  font:inherit; font-size:12px; font-weight:600; padding:6px 11px; border-radius:999px; cursor:pointer;
+}
+.chip[aria-pressed="true"]{ color:#fff; border-color:transparent; }
+.chip .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+
+/* ---- V/F cards ---- */
+.vf-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:16px 18px; margin-bottom:12px; border-left:4px solid var(--topic,var(--accent));
+}
+.vf-top{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+.vf-tag{ font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--topic,var(--accent)); }
+.vf-stmt{ font-size:15.5px; line-height:1.5; margin:6px 0 14px; }
+.vf-btns{ display:flex; gap:8px; }
+.vf-btn{
+  flex:1; appearance:none; border:1px solid var(--border); background:var(--surface-2); color:var(--fg);
+  font:inherit; font-weight:700; font-size:13.5px; padding:9px; border-radius:9px; cursor:pointer;
+}
+.vf-btn:hover{ border-color:var(--accent); }
+.vf-btn:disabled{ cursor:default; }
+.vf-result{ display:none; margin-top:12px; padding:11px 13px; border-radius:9px; font-size:13.5px; line-height:1.5; }
+.vf-result.show{ display:block; }
+.vf-result.ok{ background:var(--good-bg); color:var(--good); }
+.vf-result.bad{ background:var(--bad-bg); color:var(--bad); }
+.vf-result b{ display:block; margin-bottom:3px; font-size:13px; }
+.vf-btn.correct{ background:var(--good-bg); border-color:var(--good); color:var(--good); }
+.vf-btn.wrong{ background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+
+/* ---- fill blank cards ---- */
+.fb-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:16px 18px; margin-bottom:12px; border-left:4px solid var(--topic,var(--accent));
+}
+.fb-stmt{ font-size:15.5px; line-height:1.65; margin:6px 0 12px; }
+.fb-input{
+  font:inherit; font-weight:600; font-size:14px; color:var(--accent-ink);
+  border:none; border-bottom:2px solid var(--border); background:transparent;
+  padding:2px 4px; width:min(220px,60vw); text-align:center;
+}
+.fb-input:focus{ outline:none; border-color:var(--accent); }
+.fb-row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.fb-check{
+  appearance:none; border:1px solid var(--accent); background:var(--accent); color:#fff;
+  font:inherit; font-weight:700; font-size:13px; padding:7px 14px; border-radius:8px; cursor:pointer;
+}
+.fb-fb{ font-size:13px; margin-top:10px; padding:9px 12px; border-radius:8px; display:none; }
+.fb-fb.show{ display:block; }
+.fb-fb.ok{ background:var(--good-bg); color:var(--good); }
+.fb-fb.bad{ background:var(--bad-bg); color:var(--bad); }
+.fb-input.ok{ border-color:var(--good); color:var(--good); }
+.fb-input.bad{ border-color:var(--bad); color:var(--bad); }
+
+/* ---- test ---- */
+.test-intro{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:26px 22px; text-align:center;
+}
+.test-intro p{ color:var(--muted); font-size:14px; max-width:46ch; margin:8px auto 18px; line-height:1.55; }
+.btn-primary{
+  appearance:none; border:none; background:var(--accent); color:#fff; font:inherit;
+  font-weight:700; font-size:14.5px; padding:13px 26px; border-radius:10px; cursor:pointer;
+}
+.btn-primary:hover{ background:var(--accent-ink); }
+.btn-ghost{
+  appearance:none; border:1px solid var(--border); background:var(--surface); color:var(--fg); font:inherit;
+  font-weight:700; font-size:13.5px; padding:10px 18px; border-radius:9px; cursor:pointer; margin-top:10px;
+}
+.progressbar{ height:6px; border-radius:999px; background:var(--border); overflow:hidden; margin:18px 0 22px; }
+.progressbar i{ display:block; height:100%; background:var(--accent); width:0%; transition:width .2s; }
+.q-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; }
+.q-meta{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:10px; font-weight:600; }
+.q-text{ font-size:16.5px; font-weight:600; line-height:1.45; margin:0 0 16px; }
+.opt{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  border:1px solid var(--border); background:var(--surface-2); color:var(--fg); font:inherit;
+  font-size:14.5px; padding:12px 14px; border-radius:10px; cursor:pointer; margin-bottom:8px;
+}
+.opt:hover{ border-color:var(--accent); }
+.opt .k{ width:22px; height:22px; flex:none; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; color:var(--muted); }
+.opt.sel{ border-color:var(--accent); }
+.opt.correct{ border-color:var(--good); background:var(--good-bg); }
+.opt.correct .k{ border-color:var(--good); color:var(--good); }
+.opt.wrong{ border-color:var(--bad); background:var(--bad-bg); }
+.opt.wrong .k{ border-color:var(--bad); color:var(--bad); }
+.opt:disabled{ cursor:default; }
+.test-nav{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; }
+.test-nav span{ font-size:13px; color:var(--muted); }
+
+.results{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px 22px; text-align:center; }
+.results .big{ font-family:'Lora',Georgia,serif; font-size:52px; font-weight:600; margin:6px 0; font-variant-numeric:tabular-nums; }
+.results .lbl{ color:var(--muted); font-size:13.5px; }
+.review{ text-align:left; margin-top:22px; display:flex; flex-direction:column; gap:10px; }
+.review-item{ border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; }
+.review-item .q{ font-weight:600; margin-bottom:6px; }
+.review-item .a{ color:var(--muted); }
+.review-item.ok{ border-left:3px solid var(--good); }
+.review-item.bad{ border-left:3px solid var(--bad); }
+
+footer{ text-align:center; color:var(--muted); font-size:12px; margin-top:40px; }
+
+@media (max-width:480px){
+  .vf-btns{ flex-direction:column; }
+  .score{ width:100%; justify-content:center; }
+}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Historia de España · Selectividade</p>
+    <h1>Repaso para o exame</h1>
+    <p class="sub">Dos Reis Católicos á Segunda República. Practica cos tres exercicios ata que te saian ben case todos: verdadeiro ou falso, completar ocos e un test de 20 preguntas con centos de combinacións posibles.</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-view="vf" aria-selected="true">Verdadeiro / Falso<span class="n" id="vf-count"></span></button>
+    <button class="tab" role="tab" data-view="fb" aria-selected="false">Completar ocos<span class="n" id="fb-count"></span></button>
+    <button class="tab" role="tab" data-view="test" aria-selected="false">Test · 20 preguntas<span class="n" id="test-count"></span></button>
+  </nav>
+
+  <!-- ============ VIEW 1: V/F ============ -->
+  <section class="view active" id="view-vf">
+    <div class="panel-head">
+      <div>
+        <h2>Verdadeiro ou falso</h2>
+        <p>Le a afirmación, decide e consulta a explicación. Inclúe as trampas típicas de Selectividade.</p>
+      </div>
+      <div class="score" id="vf-score"><span class="dot"></span>Acertos: <b><span id="vf-right">0</span>/<span id="vf-seen">0</span></b></div>
+    </div>
+    <div class="filters" id="vf-filters"></div>
+    <div id="vf-list"></div>
+  </section>
+
+  <!-- ============ VIEW 2: FILL BLANKS ============ -->
+  <section class="view" id="view-fb">
+    <div class="panel-head">
+      <div>
+        <h2>Completar os ocos</h2>
+        <p>Escribe a palabra, nome ou data que falta e comproba. Non importan maiúsculas nin acentos.</p>
+      </div>
+      <div class="score" id="fb-score"><span class="dot"></span>Acertos: <b><span id="fb-right">0</span>/<span id="fb-seen">0</span></b></div>
+    </div>
+    <div class="filters" id="fb-filters"></div>
+    <div id="fb-list"></div>
+  </section>
+
+  <!-- ============ VIEW 3: TEST ============ -->
+  <section class="view" id="view-test">
+    <div id="test-intro" class="test-intro">
+      <p class="eyebrow" style="justify-content:center;display:flex">Test final</p>
+      <h2 style="margin:4px 0 2px">20 preguntas ao chou</h2>
+      <p>Cada vez que comezas sae unha combinación distinta, elixida dun banco de máis de 70 preguntas tipo test de todos os temas (inclúe as que anunciou o profesor). Practica varias veces para dominalo todo.</p>
+      <button class="btn-primary" id="start-test">Comezar test</button>
+    </div>
+
+    <div id="test-quiz" style="display:none">
+      <div class="progressbar"><i id="test-bar"></i></div>
+      <div id="test-qwrap"></div>
+    </div>
+
+    <div id="test-results" style="display:none"></div>
+  </section>
+
+  <footer>Apuntes propios · repasa canto queiras, non se garda nada fóra deste dispositivo.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- TOPICS ---------------- */
+const TOPICS = [
+  {id:"rrcc", label:"Reis Católicos", color:"#A3243B"},
+  {id:"imp",  label:"Imperio XVI",    color:"#B47A0A"},
+  {id:"xvii", label:"Crise do XVII",  color:"#2C4A7C"},
+  {id:"gal",  label:"Galicia Austrias", color:"#6A3D9A"},
+  {id:"am",   label:"América",       color:"#0D6B5C"},
+  {id:"rest", label:"Restauración",  color:"#B5541E"},
+  {id:"pdr",  label:"Primo de Rivera", color:"#8A1F3D"},
+];
+const topicOf = id => TOPICS.find(t=>t.id===id);
+
+/* ---------------- VERDADEIRO/FALSO ---------------- */
+const VF = [
+// RRCC
+{t:"rrcc",s:"Isabel e Fernando casaron en 1469.",a:true,e:"Correcto: o matrimonio celebrouse en 1469; pasaron a ser raíña e rei dos seus reinos en 1479."},
+{t:"rrcc",s:"A unión de Castela e Aragón cos Reis Católicos foi unha unión política completa que creou un único Estado.",a:false,e:"Foi unha unión dinástica, non política: cada reino conservou as súas propias leis, Cortes, moeda e institucións."},
+{t:"rrcc",s:"Aragón conservou as súas propias Cortes, moeda e leis tras a unión dinástica.",a:true,e:"Correcto: Castela e Aragón mantiveron estruturas propias; non naceu un Estado único."},
+{t:"rrcc",s:"Isabel herdou o trono de Castela sen ningunha oposición.",a:false,e:"Tivo que defender os seus dereitos fronte a Henrique IV e á súa sobriña Xoana a Beltranexa nunha guerra civil."},
+{t:"rrcc",s:"Fernando tivo que loitar nunha guerra civil para ser rei de Aragón.",a:false,e:"Foi Isabel quen tivo o conflito polo trono de Castela; Fernando era herdeiro directo de Aragón."},
+{t:"rrcc",s:"As Audiencias creadas polos Reis Católicos eran tribunais de xustiza.",a:true,e:"Correcto, e é un dato que pode saír en preguntas tipo test."},
+{t:"rrcc",s:"A Santa Hermandad funcionaba como unha especie de policía rural.",a:true,e:"Correcto: relacionada coa expresión «a boas horas, mangas verdes», pola cor da súa vestimenta."},
+{t:"rrcc",s:"Os Tercios xa existían plenamente configurados durante o reinado dos Reis Católicos.",a:false,e:"O seu xerme foi o exército permanente creado polos Reis Católicos; os Tercios desenvolvéronse despois."},
+{t:"rrcc",s:"En 1492 conquistouse Granada e decretouse a expulsión dos xudeus.",a:true,e:"Correcto: ambos feitos ocorreron no mesmo ano, 1492, e valéronlles o título de «Católicos»."},
+{t:"rrcc",s:"Navarra foi conquistada por Castela en 1512, antes da morte de Isabel.",a:false,e:"A conquista de Navarra (1512) ocorreu despois da morte de Isabel, xa só co goberno de Fernando."},
+{t:"rrcc",s:"As Canarias pertencían á Coroa de Aragón.",a:false,e:"As Canarias, igual que Granada despois da súa conquista, eran territorio da Coroa de Castela."},
+{t:"rrcc",s:"Os Reis Católicos recibiron o seu título do Papa.",a:true,e:"Correcto, por conquistar Granada e expulsar aos xudeus, ambos feitos en 1492."},
+{t:"rrcc",s:"O xugo e as frechas do escudo dos Reis Católicos foron reutilizados pola Falanxe Española en 1933.",a:true,e:"Correcto: José Antonio Primo de Rivera creou a Falanxe ese ano reutilizando ese símbolo."},
+{t:"rrcc",s:"O Principado de Cataluña foi sempre un reino independente dentro da Coroa de Aragón.",a:false,e:"Cataluña nunca foi formalmente un «reino»; a Coroa de Aragón estaba formada por Aragón, Valencia, Mallorca e o Principado de Cataluña."},
+{t:"rrcc",s:"A expresión «tanto monta, monta tanto» significa que Castela e Aragón se fusionaron nun único reino.",a:false,e:"Significa que Isabel e Fernando tiñan igual importancia no goberno, cada un no seu propio reino."},
+// IMP
+{t:"imp",s:"Carlos I chegou ao trono con aproximadamente 16 anos.",a:true,e:"Correcto, tras a morte de Xoana a Tola e Felipe o Fermoso."},
+{t:"imp",s:"Carlos I naceu en Castela e dominaba perfectamente o castelán dende pequeno.",a:false,e:"Naceu en Gante (Flandes) e inicialmente nin sequera dominaba o castelán."},
+{t:"imp",s:"O título de emperador do Sacro Imperio Romano Xermánico obtíñase por herdanza directa.",a:false,e:"Non se herdaba: era elixido por sete electores, señores de diferentes territorios."},
+{t:"imp",s:"Os banqueiros Fugger prestaron diñeiro a Carlos I para conseguir o título imperial.",a:true,e:"Correcto, xunto co financiamento pedido ás Cortes de Castela (relacionado coa Guerra dos Comuneros)."},
+{t:"imp",s:"Carlos I abdicou en 1556, algo moi habitual entre os monarcas da época.",a:false,e:"A abdicación foi algo pouco habitual para un rei daquel tempo."},
+{t:"imp",s:"Na división da súa herdanza, Carlos I deixou Austria e o título imperial ao seu fillo Felipe.",a:false,e:"Austria e o título imperial foron para o seu irmán Fernando; Felipe recibiu Castela, Aragón e América."},
+{t:"imp",s:"A expresión «o Imperio onde nunca se poñía o sol» refírese á extensión territorial baixo Felipe II.",a:true,e:"Correcto: os territorios estaban en Europa, América, Asia e Oceanía."},
+{t:"imp",s:"As Filipinas reciben o seu nome en honra a Felipe II.",a:true,e:"Correcto: Felipe → Filipinas."},
+{t:"imp",s:"A chegada de ouro e prata americanos evitou por completo o endebedamento da Monarquía Hispánica.",a:false,e:"Non o evitou: os gastos (sobre todo militares, cos Tercios) eran aínda maiores, provocando varias bancarrotas."},
+{t:"imp",s:"Os Tercios estaban formados exclusivamente por soldados españois.",a:false,e:"Eran en boa medida mercenarios de diferentes nacionalidades, pagos a soldo."},
+{t:"imp",s:"O saqueo de Roma de 1527 relaciónase coa falta de pagamento ás tropas de Carlos V.",a:true,e:"Correcto: cando non recibían o soldo, podían producirse saqueos como este."},
+{t:"imp",s:"A Gran Armada de 1588 conseguiu invadir Inglaterra con éxito.",a:false,e:"Fracasou: saíron 127 barcos e só volveron 87."},
+{t:"imp",s:"María Pita destacou na defensa da Coruña fronte á Contraarmada inglesa de 1589.",a:true,e:"Correcto, un ano despois do fracaso da Gran Armada española."},
+// XVII
+{t:"xvii",s:"Os Austrias Menores son Filipe III, Filipe IV e Carlos II.",a:true,e:"Correcto, fronte aos Austrias Maiores: Carlos I e Felipe II."},
+{t:"xvii",s:"Durante o século XVII a poboación da monarquía hispánica medrou de 7 a 8 millóns de habitantes.",a:false,e:"Foi ao contrario: diminuíu de 8 a 7 millóns, aproximadamente."},
+{t:"xvii",s:"A expulsión dos mouriscos ocorreu durante o reinado de Filipe III.",a:true,e:"Correcto, e supuxo a saída duns 350.000 habitantes."},
+{t:"xvii",s:"A expulsión dos mouriscos afectou sobre todo á Coroa de Castela.",a:false,e:"Afectou especialmente á Coroa de Aragón, onde a súa presenza era máis importante."},
+{t:"xvii",s:"Os reais de vellón eran moedas de prata de alto valor.",a:false,e:"Eran moedas de cobre, froito da depreciación da moeda durante a crise."},
+{t:"xvii",s:"O Conde-Duque de Olivares foi o valido de Filipe III.",a:false,e:"Foi o valido de Filipe IV; o Duque de Lerma foi o de Filipe III."},
+{t:"xvii",s:"A Unión de Armas pretendía que todos os reinos contribuísen con cartos e soldados, non só Castela.",a:true,e:"Correcto: ata entón Castela soportaba a maior parte dos custos militares."},
+{t:"xvii",s:"A Guerra dos Trinta Anos (1618-1648) tivo compoñentes relixiosos e de loita polo dominio de Europa.",a:true,e:"Correcto: presentouse como conflito católico-protestante, pero tamén foi unha loita polo poder político."},
+{t:"xvii",s:"Francia, sendo católica, loitou do lado da monarquía hispánica na Guerra dos Trinta Anos.",a:false,e:"Francia tomou partido contra a monarquía hispánica, a pesar de ser católica."},
+{t:"xvii",s:"A revolta catalá de 1640 coñécese como a dos Segadores.",a:true,e:"Correcto: estourou pola presenza abusiva dos terzos en Cataluña."},
+{t:"xvii",s:"Tras a revolta catalá, a monarquía hispánica tivo que ceder o Rosellón a Francia.",a:true,e:"Correcto, como consecuencia do conflito."},
+{t:"xvii",s:"Foi Filipe IV quen recoñeceu finalmente a independencia de Portugal.",a:false,e:"Foi Carlos II, o último Austria, quen a recoñeceu, rematando a unión ibérica (≈60 anos)."},
+{t:"xvii",s:"Galicia sufriu a crise do XVII con máis intensidade ca o resto da monarquía.",a:false,e:"Sufriuna mellor, grazas á chegada (tardía) do millo e da pataca."},
+{t:"xvii",s:"O Século de Ouro español coincide coa época de maior crise política e económica do XVII.",a:true,e:"Correcto: a historia non é só oposición entre épocas boas e malas."},
+// GAL
+{t:"gal",s:"O Capitán Xeneral de Galicia tiña a súa sede na Coruña.",a:true,e:"Correcto, era a máxima autoridade militar do territorio."},
+{t:"gal",s:"Galicia contaba cun vicerrei propio, igual que os territorios americanos.",a:false,e:"Tiña un Capitán Xeneral, non un vicerrei, por ser considerada territorio de «segunda división» dentro de Castela."},
+{t:"gal",s:"A Xunta do Reino de Galicia tiña poder lexislativo pleno.",a:false,e:"Era só un órgano consultivo: asesoraba, recadaba impostos e recrutaba tropas, sen poder executivo nin lexislativo."},
+{t:"gal",s:"Galicia comprou o seu voto propio nas Cortes de Castela en 1623.",a:true,e:"Correcto: antes a representaba Zamora."},
+{t:"gal",s:"O millo e a pataca chegaron a Galicia de forma moi temperá, xa no século XVI.",a:false,e:"Chegaron de forma tardía, xa avanzado o período dos Austrias."},
+{t:"gal",s:"O foro era un contrato de arrendamento agrario de longa duración.",a:true,e:"Correcto: habitualmente «a vida de tres reis e dez anos máis»."},
+{t:"gal",s:"O gremio de mareantes de Pontevedra foi un dos máis destacados de Galicia.",a:true,e:"Correcto, relacionado coa pesca de sardiña e bacallau."},
+// AM
+{t:"am",s:"Colón descubriu América en 1492 buscando unha ruta cara ás Indias e ás Molucas.",a:true,e:"Correcto: non buscaba un novo continente senón chegar a Oriente navegando cara ao oeste."},
+{t:"am",s:"Portugal apoiou economicamente o proxecto de Colón dende o principio.",a:false,e:"Portugal non o aceptou; foron os Reis Católicos quen apoiaron o proxecto, coas Capitulacións de Santa Fe."},
+{t:"am",s:"As Capitulacións de Santa Fe asináronse en 1492, o mesmo ano da conquista de Granada.",a:true,e:"Correcto: Santa Fe era o campamento dende o que se conquistaba Granada."},
+{t:"am",s:"A primeira illa á que chegou Colón foi Guanahani, nas Bahamas.",a:true,e:"Correcto, onde chamou «indios» aos habitantes, pensando que chegara ás Indias."},
+{t:"am",s:"Colón morreu sabendo con certeza que descubrira un novo continente.",a:false,e:"Morreu pensando que chegara ás Indias, sen saber que se trataba dun continente descoñecido."},
+{t:"am",s:"Vasco Núñez de Balboa demostrou a existencia dun novo océano ao cruzar o istmo de Panamá.",a:true,e:"Correcto: chamouno Mar do Sur e demostrou que non eran as Indias."},
+{t:"am",s:"A expedición de Magallanes e Elcano completou a primeira volta ao mundo en aproximadamente tres anos.",a:true,e:"Correcto, demostrando na práctica a redondez da Terra."},
+{t:"am",s:"Foi Magallanes quen completou persoalmente a volta ao mundo, regresando a Sevilla.",a:false,e:"Magallanes morreu durante a viaxe; foi Juan Sebastián Elcano quen a completou."},
+{t:"am",s:"Hernán Cortés conquistou o Imperio inca.",a:false,e:"Cortés conquistou o Imperio azteca; Pizarro foi quen conquistou o Imperio inca."},
+{t:"am",s:"A conquista e colonización de América correspondeu principalmente á Coroa de Aragón.",a:false,e:"Correspondeu á Coroa de Castela, non á de Aragón."},
+{t:"am",s:"Calcúlase que morreu arredor do 90% da poboación indíxena tras a conquista.",a:true,e:"Correcto, uns 56 millóns de persoas, sobre todo por enfermidades traídas de Europa."},
+{t:"am",s:"A Casa de Contratación, situada en Sevilla, controlaba o comercio con América.",a:true,e:"Correcto, cobrando impostos como o quinto real."},
+{t:"am",s:"Os indíxenas foron considerados legalmente escravos pola Coroa de Castela dende o principio.",a:false,e:"Foron considerados vasalos da Coroa, non escravos, aínda que na práctica moitos foron explotados."},
+{t:"am",s:"A mita era un sistema de traballo obrigatorio usado especialmente nas minas dos Andes.",a:true,e:"Correcto, con condicións moi duras e perigosas."},
+{t:"am",s:"A chegada masiva de ouro e prata americanos provocou unha baixada xeral dos prezos en Europa.",a:false,e:"Provocou o contrario: inflación, coñecida como a revolución dos prezos."},
+// REST
+{t:"rest",s:"A Restauración comeza en 1875 con Afonso XII e remata en 1923 co golpe de Primo de Rivera.",a:true,e:"Correcto: a ditadura xa non forma parte da Restauración."},
+{t:"rest",s:"Cánovas del Castillo foi o impulsor do sistema da Restauración.",a:true,e:"Correcto, buscando evitar golpes militares e garantir a estabilidade mediante o bipartidismo."},
+{t:"rest",s:"O sistema da Restauración baseábase nunha alternancia real e democrática entre partidos.",a:false,e:"Era unha alternancia pactada e ficticia: o turnismo, non unha competición democrática real."},
+{t:"rest",s:"Os dous partidos dinásticos eran o Conservador (Cánovas) e o Liberal (Sagasta).",a:true,e:"Correcto, tamén chamados gobernamentais ou da quenda."},
+{t:"rest",s:"A Constitución de 1876 estivo vixente ata 1923.",a:true,e:"Correcto: foi derrogada de facto co golpe de Primo de Rivera."},
+{t:"rest",s:"María Cristina de Habsburgo foi raíña reinante efectiva tras a morte de Afonso XII.",a:false,e:"Foi rexente durante a minoría de idade do seu fillo Afonso XIII (1885-1902)."},
+{t:"rest",s:"En 1890 implantouse o sufraxio universal masculino en España.",a:true,e:"Correcto, aínda que o caciquismo seguiu manipulando os resultados."},
+{t:"rest",s:"O caciquismo e a fraude electoral desapareceron tras a implantación do sufraxio universal.",a:false,e:"Seguiron manipulando os resultados: liberalismo non implica necesariamente democracia real."},
+{t:"rest",s:"En 1898 España perdeu Cuba, Porto Rico e Filipinas.",a:true,e:"Correcto, tras o Tratado de París: o «Desastre do 98»."},
+{t:"rest",s:"O sistema de quintas permitía aos ricos pagar para libraren do servizo militar.",a:true,e:"Correcto: a redención en metálico facía que fose «a guerra dos pobres»."},
+{t:"rest",s:"Os mambises eran os soldados españois enviados a Cuba.",a:false,e:"Os mambises eran os independentistas cubanos, non as tropas españolas."},
+{t:"rest",s:"A explosión do acoirazado Maine en La Habana foi utilizada por EEUU como pretexto para intervir.",a:true,e:"Correcto: probablemente foi un accidente, pero acusaron a España."},
+{t:"rest",s:"O Tratado de París de 1898 supuxo que España recibise unha gran compensación económica por Cuba.",a:false,e:"España recibiu só uns 20 millóns de dólares, moi inferior aos 300 millóns que pedira inicialmente."},
+{t:"rest",s:"Joaquín Costa é o principal representante do Rexeneracionismo, co lema «escola e despensa».",a:true,e:"Correcto: corrente que criticaba o atraso de España e pedía reformas profundas."},
+{t:"rest",s:"A Lei de Xurisdicións de 1906 sometía as ofensas ao exército, á monarquía ou á patria a tribunais civís.",a:false,e:"Sometíaas a tribunais militares, subordinando o poder civil ao militar."},
+{t:"rest",s:"A Semana Tráxica de 1909 en Barcelona estivo relacionada co envío de reservistas a Marrocos.",a:true,e:"Correcto: acabou en revolta, con queima de igrexas e conventos e dura represión."},
+{t:"rest",s:"Francisco Ferrer i Guardia foi executado tras a Semana Tráxica, acusado de instigala.",a:true,e:"Correcto: pedagogo anarquista, a súa execución provocou gran escándalo internacional."},
+{t:"rest",s:"O Desastre de Annual (1921) foi unha vitoria española fronte a Abd el-Krim.",a:false,e:"Foi unha grave derrota, por mala planificación e o avance imprudente do xeneral Silvestre."},
+{t:"rest",s:"CNT e UGT son, respectivamente, o sindicato anarquista e o socialista.",a:true,e:"Correcto: CNT (anarquista, forte en Cataluña) e UGT (socialista, ligado ao PSOE)."},
+{t:"rest",s:"O anarquismo acepta participar nas eleccións para conquistar o poder político.",a:false,e:"Iso é propio do socialismo marxista; o anarquismo rexeita a vía electoral e busca eliminar o Estado por acción directa."},
+{t:"rest",s:"Cánovas del Castillo morreu asasinado por un anarquista en 1897.",a:true,e:"Correcto, un dos varios líderes políticos asasinados neste período (Canalejas en 1912, Dato en 1921)."},
+// PDR
+{t:"pdr",s:"O golpe de Primo de Rivera comezou o 13 de setembro de 1923 en Barcelona.",a:true,e:"Correcto, xustificado nun manifesto ao país e ao exército."},
+{t:"pdr",s:"O golpe de Primo de Rivera supuxo o fin inmediato da monarquía de Afonso XIII.",a:false,e:"A monarquía continuou ata 1931; Afonso XIII seguiu sendo rei durante toda a ditadura."},
+{t:"pdr",s:"Afonso XIII deu persoalmente o golpe de Estado xunto con Primo de Rivera.",a:false,e:"O golpe foi de Primo de Rivera; o rei non o deu, pero aceptouno e entregoulle o Goberno."},
+{t:"pdr",s:"O Directorio Militar (1923-25) estivo formado só por militares.",a:true,e:"Correcto: gobernaban por decretos, sen Cortes."},
+{t:"pdr",s:"O Directorio Civil (1925-30) estivo formado exclusivamente por civís.",a:false,e:"Incorporáronse civís da Unión Patriótica, pero mantivéronse militares nos postos clave."},
+{t:"pdr",s:"A Unión Patriótica, creada en 1924, foi o partido único do réxime.",a:true,e:"Correcto: asociación de apoio e propaganda á ditadura."},
+{t:"pdr",s:"O Somatén era un corpo de militares profesionais.",a:false,e:"Era unha organización de paisanos armados (civís), tradicional en Cataluña, estendida a toda España."},
+{t:"pdr",s:"O desembarco de Alhucemas (1925) foi unha operación conxunta con Francia que rematou a guerra de Marrocos.",a:true,e:"Correcto: permitiu conquistar o Rif e que Abd el-Krim se entregase."},
+{t:"pdr",s:"Abd el-Krim entregouse aos españois tras o desembarco de Alhucemas.",a:false,e:"Entregouse aos franceses, non aos españois."},
+{t:"pdr",s:"A Asemblea Nacional Consultiva creada no Directorio Civil era un Parlamento democrático con deputados elixidos.",a:false,e:"Era só consultiva: non había deputados elixidos en eleccións libres."},
+{t:"pdr",s:"As Confederacións Hidrográficas xestionaban os recursos hídricos: regadío, enerxía e inundacións.",a:true,e:"Correcto, creadas no marco do intervencionismo económico da ditadura."},
+{t:"pdr",s:"CAMPSA foi un monopolio estatal creado durante a ditadura para o sector do petróleo.",a:true,e:"Correcto, xunto con Telefónica."},
+{t:"pdr",s:"O crecemento económico da ditadura financiouse sen aumentar a débeda pública.",a:false,e:"Ao contrario: o crecemento beneficiou aos empresarios pero aumentou significativamente a débeda do Estado."},
+{t:"pdr",s:"A Sanjuanada (1926) foi un golpe de Estado que triunfou contra Primo de Rivera.",a:false,e:"Foi un intento de golpe que fracasou, de militares (artillaría) e políticos liberais."},
+{t:"pdr",s:"A FAI (Federación Anarquista Ibérica) uniu a anarquistas de España e Portugal.",a:true,e:"Correcto, creada en 1926-27 como os anarquistas máis radicais."},
+{t:"pdr",s:"A FUE era unha organización de estudantes universitarios opositora á ditadura.",a:true,e:"Correcto: opuxéronse, entre outras cousas, ao favorecemento das universidades privadas da Igrexa."},
+{t:"pdr",s:"Primo de Rivera dimitiu en xaneiro de 1930 tras perder a confianza do exército e do rei.",a:true,e:"Correcto; marchou a París, onde morreu semanas despois."},
+{t:"pdr",s:"Tras a dimisión de Primo de Rivera, o goberno de Berenguer coñeceuse popularmente como a «Ditabranda».",a:true,e:"Correcto, por intentar unha volta máis suave ao sistema constitucional."},
+{t:"pdr",s:"O Pacto de San Sebastián (1930) foi un acordo escrito e oficial asinado polo rei.",a:false,e:"Foi un acordo verbal entre forzas opositoras (republicanos, nacionalistas, socialistas…), sen participación do rei."},
+{t:"pdr",s:"Nas eleccións municipais do 12 de abril de 1931 os republicanos arrasaron nas principais cidades.",a:true,e:"Correcto: gañaron en 41 das 50 capitais de provincia."},
+{t:"pdr",s:"A Segunda República proclamouse o 14 de abril de 1931.",a:true,e:"Correcto, dous días despois das eleccións municipais."},
+];
+
+/* ---------------- COMPLETAR OCOS ---------------- */
+const FB = [
+{t:"rrcc",s:"Isabel e Fernando casaron no ano ___.",a:["1469"]},
+{t:"rrcc",s:"A unión de Castela e Aragón foi unha unión ___, non política.",a:["dinastica","dinástica"]},
+{t:"rrcc",s:"Aragón conservou as súas propias ___, moeda e leis.",a:["cortes"]},
+{t:"rrcc",s:"Isabel enfrontouse a ___ polo trono de Castela.",a:["henrique iv","henrique o iv","enrique iv"]},
+{t:"rrcc",s:"As ___ creadas polos Reis Católicos eran tribunais de xustiza.",a:["audiencias"]},
+{t:"rrcc",s:"A ___ era unha especie de policía rural dos Reis Católicos.",a:["santa hermandad"]},
+{t:"rrcc",s:"En ___ conquistouse Granada e expulsáronse os xudeus.",a:["1492"]},
+{t:"rrcc",s:"___ foi conquistada por Castela en 1512, tras a morte de Isabel.",a:["navarra"]},
+{t:"rrcc",s:"Os Reis Católicos recibiron o título de «Católicos» do ___.",a:["papa"]},
+{t:"rrcc",s:"O xugo e as frechas do seu escudo foron reutilizados pola ___, creada en 1933.",a:["falange","falanxe","falanxe espanola","falange espanola"]},
+{t:"imp",s:"Carlos I chegou ao trono con aproximadamente ___ anos.",a:["16"]},
+{t:"imp",s:"Carlos I naceu en ___, polo que inicialmente nin sequera dominaba o castelán.",a:["gante"]},
+{t:"imp",s:"O título de emperador do Sacro Imperio era elixido por ___ electores.",a:["sete","7"]},
+{t:"imp",s:"Os banqueiros ___ prestaron diñeiro a Carlos I para conseguir o título imperial.",a:["fugger"]},
+{t:"imp",s:"O financiamento pedido por Carlos I ás Cortes relaciónase coa Guerra dos ___.",a:["comuneros"]},
+{t:"imp",s:"Carlos I abdicou en ___ e retirouse a Yuste.",a:["1556"]},
+{t:"imp",s:"Na división da herdanza, o seu irmán ___ recibiu Austria e o título imperial.",a:["fernando"]},
+{t:"imp",s:"A expresión «o imperio onde nunca se poñía o sol» aplícase ao reinado de ___.",a:["felipe ii","felipe 2"]},
+{t:"imp",s:"As ___ incorporáronse á Monarquía Hispánica e o seu nome relaciónase con Felipe II.",a:["filipinas"]},
+{t:"imp",s:"Na Gran Armada de 1588 saíron 127 barcos e só volveron ___.",a:["87"]},
+{t:"imp",s:"___ destacou na defensa da Coruña fronte á Contraarmada inglesa de 1589.",a:["maria pita","maría pita"]},
+{t:"xvii",s:"Os Austrias Menores son Filipe III, Filipe IV e ___.",a:["carlos ii","carlos 2"]},
+{t:"xvii",s:"Durante o XVII a poboación pasou de ___ a ___ millóns de habitantes.",a:["8 a 7","8-7"]},
+{t:"xvii",s:"A expulsión dos ___, no reinado de Filipe III, afectou sobre todo á Coroa de Aragón.",a:["mouriscos"]},
+{t:"xvii",s:"Os ___ eran moedas de cobre que substituíron ou complementaron a prata.",a:["reais de vellon","reais de vellón"]},
+{t:"xvii",s:"O valido de Filipe IV foi o ___.",a:["conde duque de olivares","conde-duque de olivares"]},
+{t:"xvii",s:"A política de Olivares para repartir os gastos militares entre todos os reinos chámase ___.",a:["union de armas","unión de armas"]},
+{t:"xvii",s:"A Guerra dos ___ Anos (1618-1648) mesturou relixión e loita polo dominio de Europa.",a:["trinta"]},
+{t:"xvii",s:"A revolta catalá de 1640 coñécese como a dos ___.",a:["segadores"]},
+{t:"xvii",s:"Tras a revolta catalá, a monarquía cedeu o ___ a Francia.",a:["rosellon","rosellón"]},
+{t:"xvii",s:"O ___ proclamouse rei de Portugal en 1640, iniciando a súa independencia.",a:["duque de braganza"]},
+{t:"xvii",s:"Foi ___, último rei Austria, quen recoñeceu a independencia de Portugal.",a:["carlos ii","carlos 2"]},
+{t:"gal",s:"O ___ era a máxima autoridade militar en Galicia, con sede na Coruña.",a:["capitan xeneral","capitán xeneral"]},
+{t:"gal",s:"A ___ do Reino era un órgano consultivo das 7 provincias galegas.",a:["xunta"]},
+{t:"gal",s:"Galicia comprou o seu voto propio nas Cortes de Castela no ano ___.",a:["1623"]},
+{t:"gal",s:"O ___ e a pataca axudaron a Galicia a superar mellor a crise do XVII.",a:["millo"]},
+{t:"gal",s:"O ___ era un contrato de arrendamento agrario de longa duración.",a:["foro"]},
+{t:"am",s:"Colón buscaba unha ruta cara ás Indias e ás ___.",a:["molucas"]},
+{t:"am",s:"As ___ de Santa Fe asináronse en 1492 entre os Reis Católicos e Colón.",a:["capitulacions","capitulacións"]},
+{t:"am",s:"A primeira illa á que chegou Colón foi ___, nas Bahamas.",a:["guanahani"]},
+{t:"am",s:"___ cruzou o istmo de Panamá e descubriu o chamado Mar do Sur.",a:["vasco nuñez de balboa","vasco nunez de balboa","balboa"]},
+{t:"am",s:"A expedición de Magallanes e ___ completou a primeira volta ao mundo.",a:["elcano"]},
+{t:"am",s:"___ conquistou o Imperio azteca.",a:["hernan cortes","hernán cortés","cortes","cortés"]},
+{t:"am",s:"___ conquistou o Imperio inca.",a:["francisco pizarro","pizarro"]},
+{t:"am",s:"A ___, situada en Sevilla, controlaba o comercio entre Castela e América.",a:["casa de contratacion","casa de contratación"]},
+{t:"am",s:"As Leis de ___ (1512) foron as primeiras medidas para limitar os abusos sobre os indíxenas.",a:["burgos"]},
+{t:"am",s:"A chegada masiva de ouro e prata provocou a chamada revolución dos ___.",a:["prezos"]},
+{t:"rest",s:"O impulsor do sistema da Restauración foi ___.",a:["canovas del castillo","cánovas del castillo","canovas","cánovas"]},
+{t:"rest",s:"Os dous partidos dinásticos eran o Conservador, de Cánovas, e o Liberal, de ___.",a:["sagasta"]},
+{t:"rest",s:"A alternancia pactada entre os dous partidos chámase ___.",a:["turnismo"]},
+{t:"rest",s:"A Constitución de ___ estivo vixente ata 1923.",a:["1876"]},
+{t:"rest",s:"En 1890 implantouse o sufraxio universal ___.",a:["masculino"]},
+{t:"rest",s:"En 1898 España perdeu Cuba, ___ e Filipinas.",a:["porto rico"]},
+{t:"rest",s:"Os independentistas cubanos eran coñecidos como ___.",a:["mambises"]},
+{t:"rest",s:"O movemento que criticaba o atraso de España co lema «escola e despensa» chámase ___.",a:["rexeneracionismo"]},
+{t:"rest",s:"A ___ de 1909 en Barcelona estourou polo envío de reservistas a Marrocos.",a:["semana traxica","semana tráxica"]},
+{t:"rest",s:"O pedagogo anarquista executado tras a Semana Tráxica foi ___.",a:["francisco ferrer i guardia","ferrer i guardia","ferrer"]},
+{t:"rest",s:"O ___ de 1921 foi unha grave derrota española ante Abd el-Krim.",a:["desastre de annual","annual"]},
+{t:"rest",s:"O sindicato anarquista máis forte en Cataluña era a ___.",a:["cnt"]},
+{t:"pdr",s:"O golpe de Primo de Rivera comezou o ___ de setembro de 1923, en Barcelona.",a:["13"]},
+{t:"pdr",s:"O Goberno formado só por militares (1923-25) chámase Directorio ___.",a:["militar"]},
+{t:"pdr",s:"O partido único creado en 1924 chámase ___.",a:["union patriotica","unión patriótica"]},
+{t:"pdr",s:"O ___ era unha organización de paisanos armados que colaboraba coa Garda Civil na orde pública.",a:["somaten","somatén"]},
+{t:"pdr",s:"O desembarco de ___ (1925) foi a operación conxunta con Francia que rematou a guerra de Marrocos.",a:["alhucemas"]},
+{t:"pdr",s:"O líder da resistencia rifeña era ___.",a:["abd el krim","abd el-krim","abd-el-krim"]},
+{t:"pdr",s:"As ___ Hidrográficas xestionaban os recursos de auga (regadío, enerxía, inundacións).",a:["confederacions","confederacións"]},
+{t:"pdr",s:"O monopolio estatal do petróleo creado na ditadura chamábase ___.",a:["campsa"]},
+{t:"pdr",s:"O intento fracasado de golpe de Estado contra Primo de Rivera en 1926 chámase ___.",a:["sanjuanada"]},
+{t:"pdr",s:"A ___ era a federación dos anarquistas máis radicais, creada en 1926-27.",a:["fai"]},
+{t:"pdr",s:"O goberno de transición do xeneral Berenguer coñeceuse como ___.",a:["ditabranda"]},
+{t:"pdr",s:"O ___ de San Sebastián (1930) foi o acordo que preparou a caída da monarquía.",a:["pacto"]},
+{t:"pdr",s:"A Segunda República proclamouse o 14 de ___ de 1931.",a:["abril"]},
+];
+
+/* ---------------- TEST (banco amplo) ---------------- */
+const MC = [
+{t:"pdr",q:"Como se chama a primeira etapa da ditadura de Primo de Rivera?",o:["Directorio Civil","Directorio Militar","Asemblea Nacional","Unión Patriótica"],c:1},
+{t:"pdr",q:"Que ocorreu coa monarquía de Afonso XIII tras o golpe de 1923?",o:["Desapareceu inmediatamente","Continuou: Afonso XIII seguiu sendo rei","Pasou a unha rexencia","Converteuse en monarquía parlamentaria plena"],c:1},
+{t:"pdr",q:"Como se chama o partido único creado en 1924?",o:["Falange Española","Unión Patriótica","Alianza Republicana","Comuneros"],c:1},
+{t:"pdr",q:"Como se chama a organización de paisanos armados, orixinaria de Cataluña e estendida a toda España pola ditadura?",o:["Somatén","Garda Civil","Xuntas de Defensa","FAI"],c:0},
+{t:"pdr",q:"Sobre o Directorio Civil, é certo que:",o:["Todos os ministros eran civís","Incorporáronse civís pero seguiron militares en postos clave","Desapareceu o exército do goberno","Foi anterior ao Directorio Militar"],c:1},
+{t:"pdr",q:"Cal foi o principal éxito militar do Directorio Militar?",o:["A toma de Tetuán","O desembarco de Alhucemas (1925)","A batalla de Annual","A conquista de Melilla"],c:1},
+{t:"pdr",q:"Quen foi o líder da resistencia rifeña contra España e Francia?",o:["Abd el-Krim","Lyautey","Silvestre","Primo de Rivera"],c:0},
+{t:"pdr",q:"Que institucións se encargaban de xestionar os recursos hídricos durante a ditadura?",o:["A Casa de Contratación","As Confederacións Hidrográficas","O Consello de Indias","A Asemblea Nacional"],c:1},
+{t:"pdr",q:"Que defendía o corporativismo da ditadura?",o:["A loita de clases como motor do cambio","A colaboración entre grupos sociais, por riba dos intereses individuais","A abolición da propiedade privada","O libre mercado sen intervención do Estado"],c:1},
+{t:"pdr",q:"Que eran os comités paritarios?",o:["Tribunais militares","Representantes de empresarios e obreiros, con intervención do Estado","Órganos consultivos nacionalistas","Institucións relixiosas"],c:1},
+{t:"pdr",q:"Que foi a Asemblea Nacional Consultiva?",o:["Un Parlamento democrático elixido en eleccións libres","Un órgano consultivo, sen carácter de Parlamento democrático","O goberno en pleno da ditadura","Unha institución exclusivamente económica"],c:1},
+{t:"pdr",q:"Que foi a Sanjuanada (1926)?",o:["Unha folga xeral revolucionaria","Un intento fracasado de golpe de Estado contra Primo de Rivera","O nome do Directorio Civil","Unha reforma educativa"],c:1},
+{t:"pdr",q:"Como se chamaba a organización dos anarquistas máis radicais, creada en 1926-27?",o:["CNT","UGT","FAI","FUE"],c:2},
+{t:"pdr",q:"Que foi a Ditabranda?",o:["O apodo do réxime de Primo de Rivera","O Goberno do xeneral Berenguer tras a ditadura","O nome da Constitución de 1929","Un partido republicano"],c:1},
+{t:"pdr",q:"Que acordo preparou a caída da monarquía en 1930?",o:["O Pacto de San Sebastián","A Lei de Xurisdicións","O Tratado de París","As Capitulacións de Santa Fe"],c:0},
+{t:"pdr",q:"Cando se proclamou a Segunda República?",o:["12 de abril de 1931","29 de xaneiro de 1930","14 de abril de 1931","13 de setembro de 1923"],c:2},
+{t:"rest",q:"Cando remata a Restauración?",o:["En 1898, co Desastre de Cuba","En 1931, coa República","En 1923, co golpe de Primo de Rivera","En 1876, coa Constitución"],c:2},
+{t:"rest",q:"Quen creou o sistema da Restauración?",o:["Sagasta","Cánovas del Castillo","Afonso XII","María Cristina"],c:1},
+{t:"rest",q:"Cales eran os dous partidos dinásticos da Restauración?",o:["Conservador e Republicano","Liberal e Socialista","Conservador (Cánovas) e Liberal (Sagasta)","Carlista e Liberal"],c:2},
+{t:"rest",q:"Que era o turnismo?",o:["Unha alternancia democrática entre varios partidos","A alternancia pactada dos dous partidos dinásticos no Goberno","Un sistema de votación por sorteo","Unha rotación de reis"],c:1},
+{t:"rest",q:"Como se manipulaban as eleccións na Restauración?",o:["Mediante referendos","Caciquismo e fraude electoral","Sufraxio censitario exclusivamente","Voto controlado dende Madrid por telégrafo"],c:1},
+{t:"rest",q:"Que Constitución estivo vixente durante case toda a Restauración?",o:["A de 1812","A de 1869","A de 1876","A de 1931"],c:2},
+{t:"rest",q:"Quen exerceu a rexencia tras a morte de Afonso XII?",o:["Isabel II","María Cristina de Habsburgo","Afonso XIII","Sagasta"],c:1},
+{t:"rest",q:"En que ano se implantou o sufraxio universal masculino?",o:["1876","1890","1898","1902"],c:1},
+{t:"rest",q:"Que colonias perdeu España en 1898?",o:["Cuba, Porto Rico e Filipinas","Marrocos e Guinea","Cuba e Marrocos","Filipinas e Guinea"],c:0},
+{t:"rest",q:"Que era o sistema de quintas?",o:["Un imposto sobre a terra","O recrutamento militar por sorteo, co que os ricos podían pagar para libraren","Un sistema electoral","Unha forma de reparto de terras"],c:1},
+{t:"rest",q:"Como se coñecía aos independentistas cubanos?",o:["Mambises","Rexeneracionistas","Carlistas","Somatén"],c:0},
+{t:"rest",q:"Que feito provocou a intervención dos Estados Unidos na guerra de Cuba?",o:["A Lei de Xurisdicións","A explosión do acoirazado Maine en La Habana","A Semana Tráxica","O Desastre de Annual"],c:1},
+{t:"rest",q:"Que supuxo o Tratado de París de 1898?",o:["España mantivo Cuba baixo protectorado","España perdeu Cuba, Porto Rico e Filipinas por unha compensación moi inferior á pedida","España gañou territorios en África","EEUU devolveu Cuba a España"],c:1},
+{t:"rest",q:"Quen é o principal representante do Rexeneracionismo?",o:["Joaquín Costa","Cánovas del Castillo","Pablo Iglesias","Primo de Rivera"],c:0},
+{t:"rest",q:"Que lema resume o programa rexeneracionista de Joaquín Costa?",o:["«Pan e traballo»","«Escola e despensa»","«Terra e liberdade»","«Orde e progreso»"],c:1},
+{t:"rest",q:"Que estableceu a Lei de Xurisdicións de 1906?",o:["Que as ofensas ao exército, á monarquía ou á patria fosen xulgadas por tribunais militares","O sufraxio universal","A separación Igrexa-Estado","A abolición da escravitude"],c:0},
+{t:"rest",q:"Que motivou a Semana Tráxica de 1909 en Barcelona?",o:["Unha suba de impostos","O envío de reservistas a Marrocos","A perda de Cuba","A chegada de Primo de Rivera ao poder"],c:1},
+{t:"rest",q:"Quen foi executado tras a Semana Tráxica, acusado de instigala?",o:["Pablo Iglesias","Francisco Ferrer i Guardia","Joaquín Costa","Cánovas del Castillo"],c:1},
+{t:"rest",q:"Que foi o Desastre de Annual (1921)?",o:["Unha vitoria decisiva española en Marrocos","Unha grave derrota española ante Abd el-Krim","O final da guerra de Marrocos","Un motín obreiro en Barcelona"],c:1},
+{t:"rest",q:"Diferenza fundamental entre anarquismo e socialismo marxista respecto ás eleccións:",o:["Ambos participan activamente","O anarquismo rexeita participar; o socialismo acepta participar","Ambos rexeitan participar","Só o anarquismo acepta participar"],c:1},
+{t:"rest",q:"Cales son as organizacións anarquista e socialista mencionadas no tema?",o:["CNT (anarquista) e PSOE/UGT (socialista)","Falange e PSOE","Unión Patriótica e CNT","FAI e Falange"],c:0},
+{t:"rest",q:"Quen asasinou a Cánovas del Castillo en 1897?",o:["Un anarquista","Un carlista","Un republicano","Un militar descontento"],c:0},
+{t:"rrcc",q:"En que ano casaron Isabel e Fernando?",o:["1479","1469","1492","1512"],c:1},
+{t:"rrcc",q:"Que concepto define correctamente a unión de Castela e Aragón cos Reis Católicos?",o:["Unión política completa nun único Estado","Unión dinástica, con territorios que conservan as súas propias leis","Unha federación moderna","Un protectorado de Castela sobre Aragón"],c:1},
+{t:"rrcc",q:"Que territorios formaban a Coroa de Aragón?",o:["Castela, Granada e Navarra","Aragón, Valencia, Mallorca e o Principado de Cataluña","Castela e Portugal","Aragón e Navarra unicamente"],c:1},
+{t:"rrcc",q:"Que institucións creadas polos Reis Católicos funcionaban como tribunais de xustiza?",o:["As Audiencias","A Santa Hermandad","Os correxidores","Os vicerreis"],c:0},
+{t:"rrcc",q:"Que se decretou en 1492 contra os xudeus que non se convertesen?",o:["O decreto de expulsión","As Leis de Burgos","A Lei de Xurisdicións","O Gran Memorial"],c:0},
+{t:"imp",q:"Con que idade aproximada chegou Carlos I ao trono?",o:["10 anos","16 anos","25 anos","30 anos"],c:1},
+{t:"imp",q:"Que banqueiros financiaron a Carlos I para acadar o título imperial?",o:["Médici","Fugger","Rothschild","Welser exclusivamente"],c:1},
+{t:"imp",q:"Que territorios recibiu Felipe na división da herdanza de Carlos I?",o:["Austria e o título imperial","Castela, Aragón, América e outros territorios","Só Flandes","Só Castela"],c:1},
+{t:"imp",q:"A que se refire a expresión «o Imperio onde nunca se poñía o sol»?",o:["Á curta duración do Imperio","Á enorme extensión territorial do Imperio de Felipe II","A unha batalla naval","A unha lei fiscal"],c:1},
+{t:"imp",q:"Que resultado tivo a Gran Armada de 1588?",o:["Un éxito completo: Inglaterra foi invadida","Un fracaso: só volveron 87 dos 127 barcos","Nunca chegou a saír","Rematou nun armisticio favorable a España"],c:1},
+{t:"xvii",q:"Quen eran os Austrias Menores?",o:["Carlos I, Felipe II e Felipe III","Felipe III, Felipe IV e Carlos II","Felipe II e Felipe III unicamente","Carlos II e Felipe V"],c:1},
+{t:"xvii",q:"Que colectivo foi expulsado no reinado de Filipe III, afectando sobre todo á Coroa de Aragón?",o:["Os xudeus","Os mouriscos","Os protestantes","Os xitanos"],c:1},
+{t:"xvii",q:"Quen foi o valido de Filipe IV?",o:["O Duque de Lerma","O Conde-Duque de Olivares","Cánovas del Castillo","O Duque de Braganza"],c:1},
+{t:"xvii",q:"Que pretendía a Unión de Armas de Olivares?",o:["Crear un exército único europeo","Que todos os reinos contribuísen con cartos e soldados, non só Castela","Abolir os Tercios","Unir Castela e Portugal"],c:1},
+{t:"xvii",q:"Que territorios se revelaron en 1640 contra a política de Olivares?",o:["Cataluña e Portugal","Navarra e Aragón","Galicia e Asturias","Valencia e Mallorca"],c:0},
+{t:"xvii",q:"Que territorio cedeu a monarquía hispánica a Francia tras a revolta catalá?",o:["O Rosellón","Flandes","Navarra","O Franco Condado"],c:0},
+{t:"gal",q:"Onde tiña a súa sede o Capitán Xeneral de Galicia?",o:["Santiago de Compostela","A Coruña","Lugo","Vigo"],c:1},
+{t:"gal",q:"Que órgano consultivo representaba ás 7 provincias históricas de Galicia?",o:["A Xunta do Reino","O Consello de Indias","A Audiencia","As Cortes de Galicia"],c:0},
+{t:"gal",q:"En que ano comprou Galicia o seu voto propio nas Cortes de Castela?",o:["1609","1623","1640","1512"],c:1},
+{t:"am",q:"Que buscaba Colón ao propoñer navegar cara ao oeste?",o:["Unha ruta cara ás Indias e Molucas","Unha ruta cara a Portugal","Conquistar Granada","Chegar a Flandes"],c:0},
+{t:"am",q:"Onde se asinaron as Capitulacións entre os Reis Católicos e Colón?",o:["En Santa Fe","En Sevilla","En Barcelona","En Toledo"],c:0},
+{t:"am",q:"Quen demostrou que os territorios descubertos por Colón non eran as Indias?",o:["Hernán Cortés","Vasco Núñez de Balboa","Francisco Pizarro","Magallanes"],c:1},
+{t:"am",q:"Quen completou a primeira volta ao mundo tras a morte de Magallanes?",o:["Juan Sebastián Elcano","Vasco da Gama","Cristovo Colón","Hernán Cortés"],c:0},
+{t:"am",q:"Que conquistador venceu ao Imperio azteca?",o:["Francisco Pizarro","Hernán Cortés","Lope de Aguirre","Cabeza de Vaca"],c:1},
+{t:"am",q:"Que institución, situada en Sevilla, controlaba o comercio con América?",o:["O Consello de Indias","A Casa de Contratación","A Audiencia","O Vicerreinado"],c:1},
+{t:"am",q:"Que sistema de traballo forzoso se empregaba especialmente nas minas dos Andes?",o:["A encomenda","O repartimento","A mita","O foro"],c:2},
+{t:"am",q:"Que consecuencia económica provocou a chegada masiva de ouro e prata americanos?",o:["A baixada xeral de prezos","A revolución dos prezos (inflación)","A desaparición da moeda","O aumento do valor do ouro en América"],c:1},
+{t:"pdr",q:"Cal destas afirmacións sobre o Directorio Militar e o Civil é correcta?",o:["O Militar (1923-25) tiña só militares; o Civil (1925-30) incorporou civís mantendo militares clave","Ambos tiveron a mesma composición","O Civil foi anterior ao Militar","Nunca houbo civís na ditadura"],c:0},
+{t:"pdr",q:"Que trazo NON define un réxime ditatorial como o de Primo de Rivera?",o:["Suspensión das Cortes e a Constitución","División de poderes efectiva","Partido único","Concentración de poderes"],c:1},
+{t:"pdr",q:"Cal destas NON foi unha medida económica da ditadura de Primo de Rivera?",o:["Proteccionismo arancelario","Creación de CAMPSA","Nacionalización completa da banca ao estilo comunista","Investimento en obras públicas"],c:2},
+{t:"pdr",q:"Que relación hai entre a Restauración e a ditadura de Primo de Rivera?",o:["Son o mesmo período histórico","A ditadura (1923-30) pon fin á Restauración (1875-1923)","A ditadura é anterior á Restauración","Non teñen relación cronolóxica"],c:1},
+{t:"xvii",q:"Cal destas parellas rei–valido NON é correcta?",o:["Filipe III – Duque de Lerma","Filipe IV – Conde-Duque de Olivares","Carlos I – Cánovas del Castillo","Carlos II – sen valido do mesmo nivel que os anteriores"],c:2},
+{t:"rest",q:"Que corrente política defendía que unha comunidade con vínculos comúns podía reclamar un Estado propio?",o:["O rexeneracionismo","O nacionalismo","O anarquismo","O turnismo"],c:1},
+{t:"rest",q:"Quen lideraba a Lliga Regionalista catalá xunto con Prat de la Riba?",o:["Francesc Cambó","Sabino Arana","Pablo Iglesias","Alejandro Lerroux"],c:0},
+{t:"rest",q:"Quen fundou o PNV (nacionalismo vasco)?",o:["Francesc Cambó","Sabino Arana","Prat de la Riba","Pi i Margall"],c:1},
+{t:"rest",q:"En Galicia, que feitos de 1917 marcan o inicio do nacionalismo galego organizado?",o:["As Irmandades da Fala e a Asemblea de Lugo","A fundación do PSOE","A Semana Tráxica","O Desastre de Annual"],c:0},
+{t:"rest",q:"Cales son as dúas clases sociais principais xurdidas coa Revolución Industrial?",o:["Nobreza e clero","Burguesía e proletariado","Campesiñado e fidalgos","Militares e civís"],c:1},
+{t:"rest",q:"Cal era a reivindicación laboral coñecida como «as tres oito»?",o:["8 horas de traballo, 8 de descanso, 8 de sono","8 pesetas de salario mínimo","8 horas semanais libres","8 días de vacacións"],c:0},
+{t:"rest",q:"Que data se conmemora como Día Internacional dos Traballadores?",o:["1 de maio","12 de outubro","14 de abril","1 de xaneiro"],c:0},
+{t:"pdr",q:"Que ministro destacou en Facenda durante o Directorio Civil?",o:["José Calvo Sotelo","Francesc Cambó","Joaquín Costa","Antonio Maura"],c:0},
+{t:"pdr",q:"Cal foi o resultado xeral das eleccións municipais do 12 de abril de 1931?",o:["Vitoria monárquica clara en todo o país","Empate xeral, pero vitoria republicana nas principais cidades","Vitoria republicana absoluta en todo o país, sen discusión","Anulación das eleccións"],c:1},
+];
+
+/* ---------------- helpers ---------------- */
+function norm(s){ return s.toString().trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[.,;:!?¡¿]/g,""); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------------- TABS ---------------- */
+const tabs = document.querySelectorAll(".tab");
+const views = { vf: document.getElementById("view-vf"), fb: document.getElementById("view-fb"), test: document.getElementById("view-test") };
+tabs.forEach(tb=>{
+  tb.addEventListener("click", ()=>{
+    tabs.forEach(x=>x.setAttribute("aria-selected", x===tb ? "true":"false"));
+    Object.values(views).forEach(v=>v.classList.remove("active"));
+    views[tb.dataset.view].classList.add("active");
+  });
+});
+document.getElementById("vf-count").textContent = VF.length+" afirmacións";
+document.getElementById("fb-count").textContent = FB.length+" frases";
+document.getElementById("test-count").textContent = "banco de "+MC.length;
+
+/* ---------------- FILTER CHIPS (shared builder) ---------------- */
+function buildFilters(container, onChange){
+  const state = new Set(TOPICS.map(t=>t.id));
+  container.innerHTML = "";
+  const allChip = document.createElement("button");
+  allChip.className="chip"; allChip.textContent="Todos os temas"; allChip.setAttribute("aria-pressed","true");
+  allChip.style.background="var(--accent)"; allChip.style.borderColor="var(--accent)"; allChip.style.color="#fff";
+  allChip.addEventListener("click", ()=>{
+    state.clear(); TOPICS.forEach(t=>state.add(t.id));
+    container.querySelectorAll(".chip").forEach(c=>{ c.setAttribute("aria-pressed", c===allChip?"true":"false"); if(c!==allChip){ c.style.background="var(--surface)"; c.style.borderColor="var(--border)"; c.style.color="var(--muted)"; } });
+    allChip.style.background="var(--accent)"; allChip.style.borderColor="var(--accent)"; allChip.style.color="#fff";
+    onChange(state);
+  });
+  container.appendChild(allChip);
+  TOPICS.forEach(t=>{
+    const chip=document.createElement("button");
+    chip.className="chip"; chip.setAttribute("aria-pressed","false");
+    chip.innerHTML = '<span class="dot" style="background:'+t.color+'"></span>'+t.label;
+    chip.addEventListener("click", ()=>{
+      const active = chip.getAttribute("aria-pressed")==="true";
+      if(active){ state.delete(t.id); chip.setAttribute("aria-pressed","false"); chip.style.background="var(--surface)"; chip.style.borderColor="var(--border)"; chip.style.color="var(--muted)"; }
+      else{ state.add(t.id); chip.setAttribute("aria-pressed","true"); chip.style.background=t.color; chip.style.borderColor=t.color; chip.style.color="#fff"; }
+      allChip.setAttribute("aria-pressed","false"); allChip.style.background="var(--surface)"; allChip.style.borderColor="var(--border)"; allChip.style.color="var(--muted)";
+      if(state.size===0){ state.clear(); TOPICS.forEach(x=>state.add(x.id)); }
+      onChange(state);
+    });
+    container.appendChild(chip);
+  });
+  return state;
+}
+
+/* ---------------- VIEW 1: V/F ---------------- */
+let vfRight=0, vfSeen=0;
+const vfList = document.getElementById("vf-list");
+function renderVF(activeTopics){
+  vfList.innerHTML = "";
+  VF.filter(item=>activeTopics.has(item.t)).forEach(item=>{
+    const tp = topicOf(item.t);
+    const card = document.createElement("div");
+    card.className="vf-card"; card.style.setProperty("--topic", tp.color);
+    card.innerHTML =
+      '<div class="vf-top"><span class="vf-tag" style="color:'+tp.color+'">'+tp.label+'</span></div>'+
+      '<p class="vf-stmt">'+item.s+'</p>'+
+      '<div class="vf-btns"><button class="vf-btn" data-v="true">Verdadeiro</button><button class="vf-btn" data-v="false">Falso</button></div>'+
+      '<div class="vf-result"><b></b><span class="exp"></span></div>';
+    const btns = card.querySelectorAll(".vf-btn");
+    const result = card.querySelector(".vf-result");
+    btns.forEach(b=>{
+      b.addEventListener("click", ()=>{
+        if(card.dataset.answered) return;
+        card.dataset.answered="1";
+        const chose = b.dataset.v==="true";
+        const ok = chose===item.a;
+        vfSeen++; if(ok) vfRight++;
+        document.getElementById("vf-right").textContent=vfRight;
+        document.getElementById("vf-seen").textContent=vfSeen;
+        btns.forEach(x=>{ x.disabled=true; });
+        b.classList.add(ok?"correct":"wrong");
+        if(!ok){ card.querySelector('[data-v="'+item.a+'"]').classList.add("correct"); }
+        result.classList.add("show", ok?"ok":"bad");
+        result.querySelector("b").textContent = (item.a? "VERDADEIRO":"FALSO") + (ok? " · acertaches":" · fallaches");
+        result.querySelector(".exp").textContent = item.e;
+      });
+    });
+    vfList.appendChild(card);
+  });
+}
+const vfState = buildFilters(document.getElementById("vf-filters"), renderVF);
+renderVF(vfState);
+
+/* ---------------- VIEW 2: FILL BLANKS ---------------- */
+let fbRight=0, fbSeen=0;
+const fbList = document.getElementById("fb-list");
+function renderFB(activeTopics){
+  fbList.innerHTML = "";
+  FB.filter(item=>activeTopics.has(item.t)).forEach(item=>{
+    const tp = topicOf(item.t);
+    const card = document.createElement("div");
+    card.className="fb-card"; card.style.setProperty("--topic", tp.color);
+    const parts = item.s.split("___");
+    const stmt = document.createElement("p");
+    stmt.className="fb-stmt";
+    stmt.appendChild(document.createTextNode(parts[0]));
+    const input = document.createElement("input");
+    input.className="fb-input"; input.type="text"; input.placeholder="…"; input.autocomplete="off"; input.spellcheck=false;
+    stmt.appendChild(input);
+    stmt.appendChild(document.createTextNode(parts[1]||""));
+    const row = document.createElement("div"); row.className="fb-row";
+    const btn = document.createElement("button"); btn.className="fb-check"; btn.textContent="Comprobar";
+    const fb = document.createElement("div"); fb.className="fb-fb";
+    row.appendChild(btn);
+    card.innerHTML = '<span class="vf-tag" style="color:'+tp.color+'">'+tp.label+'</span>';
+    card.appendChild(stmt); card.appendChild(row); card.appendChild(fb);
+    function check(){
+      if(card.dataset.answered) return;
+      const val = norm(input.value);
+      const ok = val.length>0 && item.a.some(ans=>norm(ans)===val);
+      if(!val) return;
+      card.dataset.answered="1";
+      fbSeen++; if(ok) fbRight++;
+      document.getElementById("fb-right").textContent=fbRight;
+      document.getElementById("fb-seen").textContent=fbSeen;
+      input.classList.add(ok?"ok":"bad"); input.disabled=true; btn.disabled=true;
+      fb.classList.add("show", ok?"ok":"bad");
+      fb.textContent = ok ? "Correcto." : "Resposta correcta: "+item.a[0];
+    }
+    btn.addEventListener("click", check);
+    input.addEventListener("keydown", e=>{ if(e.key==="Enter") check(); });
+    fbList.appendChild(card);
+  });
+}
+const fbState = buildFilters(document.getElementById("fb-filters"), renderFB);
+renderFB(fbState);
+
+/* ---------------- VIEW 3: TEST ---------------- */
+const startBtn = document.getElementById("start-test");
+const introEl = document.getElementById("test-intro");
+const quizEl = document.getElementById("test-quiz");
+const resultsEl = document.getElementById("test-results");
+const qwrap = document.getElementById("test-qwrap");
+const bar = document.getElementById("test-bar");
+let testQs=[], qi=0, testAnswers=[];
+
+startBtn.addEventListener("click", ()=>{
+  testQs = shuffle(MC).slice(0,20);
+  qi=0; testAnswers = new Array(20).fill(null);
+  introEl.style.display="none"; resultsEl.style.display="none"; quizEl.style.display="block";
+  renderQ();
+});
+
+function renderQ(){
+  const item = testQs[qi];
+  const tp = topicOf(item.t);
+  bar.style.width = ((qi)/20*100)+"%";
+  const opts = item.o.map((txt,i)=>({txt,i})); // keep original index mapping but shuffle display
+  const order = shuffle(opts.map((_,i)=>i));
+  const letters=["A","B","C","D"];
+  qwrap.innerHTML =
+    '<div class="q-card"><div class="q-meta"><span>Pregunta '+(qi+1)+' de 20</span><span style="color:'+tp.color+'">'+tp.label+'</span></div>'+
+    '<p class="q-text">'+item.q+'</p><div id="opts"></div>'+
+    '<div class="test-nav"><span></span><button class="btn-ghost" id="next-q" style="display:none">'+(qi===19?"Ver resultado":"Seguinte")+'</button></div></div>';
+  const optsWrap = qwrap.querySelector("#opts");
+  order.forEach((origIdx, pos)=>{
+    const b = document.createElement("button");
+    b.className="opt";
+    b.innerHTML = '<span class="k">'+letters[pos]+'</span><span>'+item.o[origIdx]+'</span>';
+    b.addEventListener("click", ()=>{
+      if(testAnswers[qi]!==null) return;
+      testAnswers[qi]=origIdx;
+      const allOpts = optsWrap.querySelectorAll(".opt");
+      allOpts.forEach(o=>o.disabled=true);
+      b.classList.add(origIdx===item.c?"correct":"wrong");
+      if(origIdx!==item.c){
+        [...allOpts].find((o,p)=>order[p]===item.c).classList.add("correct");
+      }
+      qwrap.querySelector("#next-q").style.display="inline-block";
+    });
+    optsWrap.appendChild(b);
+  });
+  qwrap.querySelector("#next-q").addEventListener("click", ()=>{
+    if(qi<19){ qi++; renderQ(); } else { showResults(); }
+  });
+}
+
+function showResults(){
+  bar.style.width="100%";
+  quizEl.style.display="none"; resultsEl.style.display="block";
+  let right=0;
+  const reviewHtml = testQs.map((item,i)=>{
+    const ok = testAnswers[i]===item.c;
+    if(ok) right++;
+    return '<div class="review-item '+(ok?"ok":"bad")+'"><div class="q">'+(i+1)+'. '+item.q+'</div>'+
+      '<div class="a">Resposta correcta: '+item.o[item.c]+(ok?"":" · marcaches: "+item.o[testAnswers[i]])+'</div></div>';
+  }).join("");
+  const pct = Math.round(right/20*100);
+  const msg = pct>=90 ? "Excelente, dominas o temario." : pct>=70 ? "Moi ben, repasa o que fallaches." : pct>=50 ? "Vas ben encamiñado, segue practicando." : "Repasa os apuntes e vólveo intentar.";
+  resultsEl.innerHTML =
+    '<div class="results"><p class="lbl">Resultado</p><div class="big">'+right+'/20</div><p class="lbl">'+pct+'% · '+msg+'</p>'+
+    '<button class="btn-primary" id="retry-test">Facer outro test</button>'+
+    '<div class="review">'+reviewHtml+'</div></div>';
+  document.getElementById("retry-test").addEventListener("click", ()=>{
+    resultsEl.style.display="none"; introEl.style.display="block";
+  });
+}
+
+})();
+</script>
+
+</body></html>
